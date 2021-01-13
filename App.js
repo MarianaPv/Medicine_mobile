@@ -1,21 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { Input, InputLabel } from "@material-ui/core";
+import Routes from "./Routes/Routes.js";
+import LottieView from "lottie-react-native";
+import UserContext from "./Components/Context/context";
+import Axios from "axios";
 
-export default function App() {
+function App() {
+  const [userData, setUserData] = useState({
+    token: undefined,
+    user: undefined,
+  });
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <UserContext.Provider value={{ userData, setUserData }}>
+      <Routes />
+    </UserContext.Provider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
