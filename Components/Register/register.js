@@ -40,6 +40,23 @@ function Register() {
   const [displayName, setDisplayName] = useState("");
   const [lastName, setLastName] = useState("");
   const [docuId, setDocuId] = useState("");
+  const [temperature, setTemperature] = useState("");
+  const [sugarLevel, setSugarLevel] = useState("");
+  const [pressure, setPressure] = useState("");
+  const [message, setMessage] = useState("");
+  const [colorMessage, setColorMessage] = useState("red");
+
+  useEffect(() => {
+    if (passwordCheck.length === 0) {
+      setMessage("");
+    } else if (password === passwordCheck) {
+      setMessage("Las contraseñas coinciden");
+      setColorMessage("green");
+    } else {
+      setMessage("Las contraseñas no coinciden");
+      setColorMessage("red");
+    }
+  }, [passwordCheck, password]);
 
   const sendInfo = async (e) => {
     e.preventDefault();
@@ -52,6 +69,9 @@ function Register() {
       email,
       password,
       passwordCheck,
+      temperature,
+      sugarLevel,
+      pressure,
     };
 
     console.log(newUser);
@@ -135,9 +155,13 @@ function Register() {
             style={{
               fontFamily: "Jost_600SemiBold",
               fontSize: 18,
-              marginBottom: 5,
+              marginBottom: 35,
+              marginLeft: 40,
+              color: "#0a4c66",
             }}
-          ></Text>
+          >
+            Datos de usuario:
+          </Text>
           <Text style={styles.textLabel}>Nombre</Text>
           <TextInput
             id="nombre"
@@ -203,7 +227,77 @@ function Register() {
             style={styles.textInput}
             onChangeText={(e) => setPasswordCheck(e)}
           ></TextInput>
+          <Text
+            style={{
+              fontFamily: "Jost_300Light",
+              fontSize: 14,
+              marginBottom: 30,
+              width: 290,
+              marginLeft: 40,
+              color: colorMessage,
+            }}
+          >
+            {message}
+          </Text>
         </View>
+
+        <View
+          style={{
+            marginTop: 40,
+            paddingTop: 15,
+            paddingBottom: 20,
+            width: 370,
+            borderRadius: 15,
+            alignSelf: "center",
+            backgroundColor: "whitesmoke",
+            borderColor: "lightgray",
+            borderWidth: 1,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "Jost_600SemiBold",
+              fontSize: 18,
+              marginBottom: 35,
+              marginLeft: 40,
+              color: "#0a4c66",
+            }}
+          >
+            Datos de salud actuales:
+          </Text>
+          <Text style={styles.textLabel}>
+            Temperatura (en grados centígrados)
+          </Text>
+          <TextInput
+            id="temperature"
+            name="temperature"
+            autoFocus
+            style={styles.textInput}
+            value={temperature}
+            onChangeText={(e) => setTemperature(e)}
+          ></TextInput>
+
+          <Text style={styles.textLabel}>Nivel de azúcar</Text>
+          <TextInput
+            id="sugarLevel"
+            name="sugarLevel"
+            value={sugarLevel}
+            autoFocus
+            style={styles.textInput}
+            onChangeText={(e) => setSugarLevel(e)}
+          ></TextInput>
+
+          <Text style={styles.textLabel}>Presión arterial</Text>
+          <TextInput
+            id="pressure"
+            name="pressure"
+            autoFocus
+            value={pressure}
+            style={styles.textInput}
+            onChangeText={(e) => setPressure(e)}
+          ></TextInput>
+        </View>
+
         <TouchableOpacity style={styles.button2} onPress={sendInfo}>
           <Text style={styles.register3}>Registrarse</Text>
         </TouchableOpacity>

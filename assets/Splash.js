@@ -5,7 +5,7 @@ import { Actions } from "react-native-router-flux";
 const Splash = ({ navigation }) => {
   useEffect(() => {
     setTimeout(() => {
-      Actions.home();
+      Actions.signin();
     }, 3000);
   }, []);
 

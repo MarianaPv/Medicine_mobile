@@ -16,6 +16,9 @@ router.post("/register", async (req, res) => {
       email,
       password,
       passwordCheck,
+      temperature,
+      sugarLevel,
+      pressure,
     } = req.body;
 
     //Validation
@@ -30,6 +33,9 @@ router.post("/register", async (req, res) => {
       email,
       password: passwordHash,
       displayName,
+      temperature,
+      sugarLevel,
+      pressure,
     });
     await newUser.save();
 
@@ -77,7 +83,7 @@ router.post("/register", async (req, res) => {
     // send mail with defined transport object
   } catch (err) {
     console.log(req.body);
-    console.log("NOSJO");
+    console.log("Ha ocurrido un error");
   }
 });
 

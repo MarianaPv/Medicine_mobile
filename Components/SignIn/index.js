@@ -32,7 +32,7 @@ import {
 } from "@expo-google-fonts/jost";
 import { AppLoading } from "expo";
 
-function HomePage() {
+function SignIn() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [error, setError] = useState();
@@ -118,9 +118,11 @@ function HomePage() {
           secureTextEntry={true}
           style={styles.textInput}
         ></TextInput>
-        <TouchableOpacity style={styles.button2}>
+
+        <TouchableOpacity style={styles.button2} onPress={() => Actions.main()}>
           <Text style={styles.register3}>INGRESAR</Text>
         </TouchableOpacity>
+
         <Text htmlFor="email" style={styles.register}>
           ¿No eres miembro?
           <TouchableOpacity
@@ -135,7 +137,7 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default SignIn;
 
 const styles = StyleSheet.create({
   container: {

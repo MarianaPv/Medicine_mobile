@@ -6,6 +6,9 @@ const userappSchema = new mongoose.Schema({
   docuId: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, minlength: 5 },
+  temperature: { type: String, required: true },
+  sugarLevel: { type: String, required: true },
+  pressure: { type: String, required: true },
   verified: { type: Boolean, default: false },
 });
 
