@@ -12,25 +12,19 @@ import {
 } from "react-native";
 import {
   useFonts,
-  Jost_100Thin,
-  Jost_200ExtraLight,
-  Jost_300Light,
-  Jost_400Regular,
-  Jost_500Medium,
-  Jost_600SemiBold,
-  Jost_700Bold,
-  Jost_800ExtraBold,
-  Jost_900Black,
-  Jost_100Thin_Italic,
-  Jost_200ExtraLight_Italic,
-  Jost_300Light_Italic,
-  Jost_400Regular_Italic,
-  Jost_500Medium_Italic,
-  Jost_600SemiBold_Italic,
-  Jost_700Bold_Italic,
-  Jost_800ExtraBold_Italic,
-  Jost_900Black_Italic,
-} from "@expo-google-fonts/jost";
+  Roboto_100Thin,
+  Roboto_100Thin_Italic,
+  Roboto_300Light,
+  Roboto_300Light_Italic,
+  Roboto_400Regular,
+  Roboto_400Regular_Italic,
+  Roboto_500Medium,
+  Roboto_500Medium_Italic,
+  Roboto_700Bold,
+  Roboto_700Bold_Italic,
+  Roboto_900Black,
+  Roboto_900Black_Italic,
+} from "@expo-google-fonts/roboto";
 
 function HomePage() {
   return (
@@ -48,15 +42,18 @@ function HomePage() {
         <Text
           style={{
             color: "white",
-            fontSize: 20,
-            fontFamily: "Jost_500Medium",
+            fontSize: 30,
+            fontFamily: "Roboto_500Medium",
           }}
         >
-          BIENVENIDO USUARIO
+          BIENVENIDO
         </Text>
       </ImageBackground>
 
-      <TouchableOpacity style={styles.button3} onPress={() => Actions.estado()}>
+      <TouchableOpacity
+        style={styles.button3}
+        onPress={() => Actions.push("estado")}
+      >
         <Text style={styles.text}>MI ESTADO / TRATAMIENTO</Text>
       </TouchableOpacity>
 
@@ -97,7 +94,7 @@ const styles = StyleSheet.create({
 
   text: {
     color: "#6a9fb4",
-    fontFamily: "Jost_400Regular",
-    fontSize: 18,
+    fontFamily: "Roboto_400Regular",
+    fontSize: 20,
   },
 });

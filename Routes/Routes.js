@@ -19,6 +19,10 @@ import Profile from "../Components/Profile/profile";
 import State from "../Components/State/state";
 import Stats from "../Components/Stats/stats";
 import Food from "../Components/Food/food";
+import Line1 from "../Components/Stats/myLineChart";
+import Line2 from "../Components/Stats/myLineChart2";
+import Pie1 from "../Components/Stats/myPieChart";
+import Pie2 from "../Components/Stats/myPieChart2";
 
 function Routes() {
   const HomeIcon = (props) => {
@@ -255,6 +259,13 @@ function Routes() {
 
         <Scene key="food" component={Food} title="Food" hideNavBar />
 
+        <Scene key="line1" component={Line1} title="Line1" hideNavBar />
+
+        <Scene key="line2" component={Line2} title="Line2" hideNavBar />
+
+        <Scene key="pie1" component={Pie1} title="Pie1" hideNavBar />
+
+        <Scene key="pie2" component={Pie2} title="Pie2" hideNavBar />
         <Scene
           key="splash"
           component={Splash}
