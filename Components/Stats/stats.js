@@ -100,7 +100,7 @@ function Stats() {
             </Text>
           </TouchableOpacity>
 
-          <View style={{ width: 20 }}></View>
+          <View style={{ width: 10 }}></View>
 
           <TouchableOpacity
             {...touchProps}
@@ -111,7 +111,6 @@ function Stats() {
                 color: "#0a4c66",
                 fontSize: 15,
                 fontFamily: "Roboto_400Regular",
-
                 padding: 10,
                 paddingLeft: 15,
               }}
@@ -164,7 +163,7 @@ function Stats() {
             </Text>
           </TouchableOpacity>
 
-          <View style={{ width: 20 }}></View>
+          <View style={{ width: 10 }}></View>
 
           <TouchableOpacity
             {...touchProps}
@@ -206,6 +205,7 @@ const styles = StyleSheet.create({
     borderColor: "lightgray",
     borderWidth: 1.3,
     marginTop: 20,
+    marginLeft: 10,
     width: 185,
     height: 200,
     borderRadius: 10,

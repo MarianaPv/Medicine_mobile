@@ -44,7 +44,6 @@ app.get("/confirmation/:token", async (req, res) => {
   } catch (e) {
     res.send("Error");
   }
-  return res.redirect("http://192.168.1.29:3001/");
 });
 //Include routes
 app.use("/userapps", require("./uroutes/userRouter"));

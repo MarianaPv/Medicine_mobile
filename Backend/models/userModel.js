@@ -9,7 +9,12 @@ const userappSchema = new mongoose.Schema({
   temperature: { type: String, required: true },
   sugarLevel: { type: String, required: true },
   pressure: { type: String, required: true },
+  weight: { type: String, required: true },
   verified: { type: Boolean, default: false },
+  historicWeight: { type: Array },
+  historicPressure: { type: Array },
+  historicSugarLevel: { type: Array },
+  historicTemperature: { type: Array },
 });
 
 module.exports = User = mongoose.model("userapps", userappSchema);

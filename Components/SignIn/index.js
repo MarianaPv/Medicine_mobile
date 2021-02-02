@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Actions } from "react-native-router-flux";
+import UserContext from "../Context/context";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   StyleSheet,
   Text,
@@ -50,7 +53,7 @@ function SignIn() {
   const [password, setPassword] = useState();
   const [error, setError] = useState();
   const [token, setToken] = useState("");
-
+  const { setUserData } = useContext(UserContext);
   const [fontsLoaded] = useFonts({
     Jost_100Thin,
     Jost_200ExtraLight,
@@ -96,28 +99,39 @@ function SignIn() {
   }
   const submit = async (e) => {
     e.preventDefault();
+    console.log("im in yes");
+    const loginUser = { email, password };
+
+    console.log(loginUser);
     try {
-      const loginUser = { email, password };
       const config = {
         headers: {
           "Content-Type": "application/json",
         },
       };
 
-      const loginRes = await Axios.post(
+      const loginRes = await axios.post(
         "http://192.168.1.29:3001/userapps/login",
         loginUser,
         config
       );
-      setUserData({
-        token: loginRes.data.token,
-        user: loginRes.data.user,
-      });
+
+      // setUserData({
+      //   token: loginRes.data.token,
+      //   user: loginRes.data.user,
+      // });
+      console.log(loginRes);
+
+      if (loginRes.data.token) {
+        Actions.replace("main", { token: loginRes.data.token });
+      } else {
+        alert("no funcionó");
+      }
     } catch (err) {
-      err.response.data.msg && setError(err.response.data.msg);
-      alert("El correo o contraseña digitados son incorrectos");
+      alert(err.response.data.msg);
     }
   };
+
   return (
     <View style={styles.container}>
       <Text
@@ -139,7 +153,9 @@ function SignIn() {
           name="email"
           autoFocus
           style={styles.textInput}
+          onChangeText={(e) => setEmail(e)}
         ></TextInput>
+
         <Text style={styles.textLabel}>Contraseña</Text>
         <TextInput
           name="password"
@@ -148,9 +164,10 @@ function SignIn() {
           textContentType="password"
           secureTextEntry={true}
           style={styles.textInput}
+          onChangeText={(e) => setPassword(e)}
         ></TextInput>
 
-        <TouchableOpacity style={styles.button2} onPress={() => Actions.main()}>
+        <TouchableOpacity style={styles.button2} onPress={submit}>
           <Text style={styles.register3}>INGRESAR</Text>
         </TouchableOpacity>
 

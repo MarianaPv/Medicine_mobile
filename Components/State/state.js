@@ -28,6 +28,45 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 
 function State() {
+  const [weight, setWeight] = useState("");
+  const [pressure, setPressure] = useState("");
+  const [historicPressure, setHistoricPressure] = useState([]);
+  const [sugarLevel, setSugarLevel] = useState("");
+  const [temperature, setTemperature] = useState("");
+  const [oxygenSat, setOxygenSat] = useState("");
+  const [symptoms, setSymptoms] = useState("");
+  const [headache, setHeadache] = useState(false);
+  const [vision, setVision] = useState(false);
+  const [WeightChange, setWeightChange] = useState(false);
+  const [nausea, setNausea] = useState(false);
+  const [stomachache, setStomachache] = useState(false);
+  const [urine, setUrine] = useState(false);
+
+  const sendState = async (e) => {
+    e.preventDefault();
+    console.log("entre marita");
+
+    const newUser = {
+      _id,
+      temperature,
+      sugarLevel,
+      pressure,
+      weight,
+      oxygenSat,
+    };
+
+    console.log(newUser);
+    try {
+      const request = await axios.post(
+        "http://192.168.0.28:3001/userapps/updatestate",
+        newUser
+      );
+      console.log(request);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <View styles={styles.container}>
       <Text
@@ -58,23 +97,33 @@ function State() {
       >
         Ayúdanos a mejorar tu experiencia, actualizando los siguientes datos.
       </Text>
-      <View style={{ display: "flex", flexDirection: "row" }}>
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
         <Text style={styles.normalText}>Tu Peso:</Text>
         <TextInput
           id="peso"
           name="peso"
           autoFocus
           style={styles.textInput}
+          onChangeText={(e) => setWeight(e)}
         ></TextInput>
       </View>
 
-      <View style={{ display: "flex", flexDirection: "row" }}>
+      <View
+        style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+      >
         <Text style={styles.normalText}>Presión arterial:</Text>
         <TextInput
           id="pression"
           name="pression"
           autoFocus
           style={styles.textInput}
+          onChangeText={(e) => setPressure(e)}
         ></TextInput>
       </View>
 
@@ -82,14 +131,16 @@ function State() {
         style={{
           display: "flex",
           flexDirection: "row",
+          alignItems: "center",
         }}
       >
         <Text style={styles.normalText}>Nivel de Azúcar:</Text>
         <TextInput
-          id="sat"
-          name="sat"
+          id="sugar"
+          name="sugar"
           autoFocus
           style={styles.textInput}
+          onChangeText={(e) => setSugarLevel(e)}
         ></TextInput>
       </View>
 
@@ -97,14 +148,16 @@ function State() {
         style={{
           display: "flex",
           flexDirection: "row",
+          alignItems: "center",
         }}
       >
         <Text style={styles.normalText}>Temperatura:</Text>
         <TextInput
-          id="sat"
-          name="sat"
+          id="temperature"
+          name="temperature"
           autoFocus
           style={styles.textInput}
+          onChangeText={(e) => setTemperature(e)}
         ></TextInput>
       </View>
 
@@ -112,6 +165,7 @@ function State() {
         style={{
           display: "flex",
           flexDirection: "row",
+          alignItems: "center",
           borderBottomColor: "lightgray",
           borderBottomWidth: 0.57,
         }}
@@ -122,6 +176,7 @@ function State() {
           name="sat"
           autoFocus
           style={styles.textInput}
+          onChangeText={(e) => setOxygenSat(e)}
         ></TextInput>
       </View>
 
@@ -130,7 +185,13 @@ function State() {
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        style={{ display: "flex", flexDirection: "row" }}
+        style={{
+          display: "flex",
+          flexDirection: "row",
+
+          borderBottomColor: "lightgray",
+          borderBottomWidth: 0.55,
+        }}
       >
         <TouchableOpacity
           style={{ marginLeft: 20, marginRight: 15, width: 70 }}
@@ -199,6 +260,10 @@ function State() {
           <Text style={styles.iconText}>Poca orina por vez</Text>
         </TouchableOpacity>
       </ScrollView>
+
+      <TouchableOpacity style={styles.myButton} onPress={sendState}>
+        <Text style={styles.textButton}>Guardar</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -244,7 +309,7 @@ const styles = StyleSheet.create({
   normalText2: {
     fontFamily: "Roboto_500Medium",
     fontSize: 16,
-    marginBottom: 30,
+    marginBottom: 15,
     marginTop: 20,
     marginLeft: 20,
     color: "#0a4c66",
@@ -275,7 +340,27 @@ const styles = StyleSheet.create({
     fontSize: 12,
     width: 70,
     textAlign: "center",
+    marginBottom: 20,
   },
 
-  touchable: { marginRight: 15, width: 70 },
+  touchable: {
+    marginRight: 15,
+    width: 70,
+  },
+
+  myButton: {
+    alignSelf: "center",
+    marginTop: 20,
+    backgroundColor: "lightgray",
+    borderRadius: 20,
+    width: 140,
+    padding: 5,
+  },
+
+  textButton: {
+    color: "#0a4c66",
+    fontSize: 15,
+    fontFamily: "Roboto_500Medium",
+    alignSelf: "center",
+  },
 });

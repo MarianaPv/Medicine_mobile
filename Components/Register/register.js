@@ -43,6 +43,11 @@ function Register() {
   const [temperature, setTemperature] = useState("");
   const [sugarLevel, setSugarLevel] = useState("");
   const [pressure, setPressure] = useState("");
+  const [weight, setWeight] = useState("");
+  const [temperatureArray, setTemperatureArray] = useState([]);
+  const [sugarLevelArray, setSugarLevelArray] = useState([]);
+  const [pressureArray, setPressureArray] = useState([]);
+  const [WeightArray, setWeightArray] = useState([]);
   const [message, setMessage] = useState("");
   const [colorMessage, setColorMessage] = useState("red");
 
@@ -72,6 +77,7 @@ function Register() {
       temperature,
       sugarLevel,
       pressure,
+      weight,
     };
 
     console.log(newUser);
@@ -85,6 +91,13 @@ function Register() {
       console.log(e);
     }
   };
+
+  useEffect(() => {
+    setPressureArray(pressure);
+    setWeightArray(weight);
+    setTemperatureArray(temperature);
+    setSugarLevelArray(sugarLevel);
+  }, [pressure, weight, temperature, sugarLevel]);
 
   return (
     <View style={styles.container}>
@@ -274,6 +287,16 @@ function Register() {
             value={pressure}
             style={styles.textInput}
             onChangeText={(e) => setPressure(e)}
+          ></TextInput>
+
+          <Text style={styles.textLabel}>Peso</Text>
+          <TextInput
+            id="weight"
+            name="weight"
+            autoFocus
+            value={weight}
+            style={styles.textInput}
+            onChangeText={(e) => setWeight(e)}
           ></TextInput>
         </View>
 

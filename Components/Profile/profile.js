@@ -74,7 +74,7 @@ function Profile() {
         ></ImageBackground>
       </TouchableOpacity>
 
-      <TextInput style={styles.textInput}></TextInput>
+      <TextInput style={styles.textInput} placeholder="Sobrenombre"></TextInput>
 
       <Text style={styles.normalText}>Información de usuario</Text>
     </View>

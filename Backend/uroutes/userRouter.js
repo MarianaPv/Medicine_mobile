@@ -19,6 +19,7 @@ router.post("/register", async (req, res) => {
       temperature,
       sugarLevel,
       pressure,
+      weight,
     } = req.body;
 
     //Validation
@@ -26,6 +27,9 @@ router.post("/register", async (req, res) => {
     //encrypting password
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
+
+    let currentDate = new Date();
+    currentDate.setHours(currentDate.getHours() - 5);
 
     const newUser = new User({
       lastName,
@@ -36,13 +40,18 @@ router.post("/register", async (req, res) => {
       temperature,
       sugarLevel,
       pressure,
+      weight,
+      historicWeight: [{ weight: weight, date: currentDate }],
+      historicPressure: [{ pressure: pressure, date: currentDate }],
+      historicSugarLevel: [{ sugarLevel: sugarLevel, date: currentDate }],
+      historicTemperature: [{ temperature: temperature, date: currentDate }],
     });
     await newUser.save();
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "medicinaparatodos.custom",
+        user: "medicinaparatodos.custom@gmail.com",
         pass: "proyectofinal123",
       },
     });
@@ -50,7 +59,7 @@ router.post("/register", async (req, res) => {
     jwt.sign(
       {
         user: {
-          id: newUser._id,
+          id: newUser.id,
         },
       },
       process.env.JWT_SECRET,
@@ -62,7 +71,7 @@ router.post("/register", async (req, res) => {
         const url = `http://localhost:3001/confirmation/${token}`;
         const output = `
           <h2>Haz clic en el siguiente link para activar tu cuenta</h2>
-          <a>http://localhost:3001/confirmation/${token}</a>
+          <p>http://localhost:3001/confirmation/${token}</p>
           <p><b>NOTA: </b> El link expira en 30 minutos.</p>
           `;
         try {
@@ -79,11 +88,10 @@ router.post("/register", async (req, res) => {
     );
 
     //Send confirmation email
-    console.log(req.body);
+
     // send mail with defined transport object
   } catch (err) {
-    console.log(req.body);
-    console.log("Ha ocurrido un error");
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -98,6 +106,7 @@ router.post("/login", async (req, res) => {
     return res.status(400).json({ msg: "faltan campos por llenar" });
   try {
     const user = await User.findOne({ email: email });
+
     if (!user)
       return res
         .status(400)
@@ -105,6 +114,13 @@ router.post("/login", async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: "Contraseña incorrecta" });
+
+    const isVerified = user.verified;
+    if (!isVerified && isMatch) {
+      return res
+        .status(400)
+        .json({ msg: "No se encuentra verificada esta cuenta" });
+    }
 
     const payload = {
       user: {
@@ -152,4 +168,11 @@ router.get("/", auth, async (req, res) => {
     id: user._id,
   });
 });
+
+//UPDATE STATE
+
+router.post("/updatestate", async (req, res) => {
+  const { temperature, sugarLevel, pressure, weight, oxygenSat } = req.body;
+});
+
 module.exports = router;
