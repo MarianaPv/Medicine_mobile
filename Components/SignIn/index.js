@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Actions } from "react-native-router-flux";
 import UserContext from "../Context/context";
+import submit from "./GetUser";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
@@ -48,12 +50,11 @@ import {
 } from "@expo-google-fonts/roboto";
 import { AppLoading } from "expo";
 
-function SignIn() {
+function SignIn(props) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [error, setError] = useState();
   const [token, setToken] = useState("");
-  const { setUserData } = useContext(UserContext);
   const [fontsLoaded] = useFonts({
     Jost_100Thin,
     Jost_200ExtraLight,
@@ -89,7 +90,7 @@ function SignIn() {
     Roboto_900Black,
     Roboto_900Black_Italic,
   });
-
+  const dispatch = useDispatch();
   if (!fontsLoaded) {
     return <AppLoading />;
   }
@@ -97,40 +98,6 @@ function SignIn() {
   if (!fontsLoaded2) {
     return <AppLoading />;
   }
-  const submit = async (e) => {
-    e.preventDefault();
-    console.log("im in yes");
-    const loginUser = { email, password };
-
-    console.log(loginUser);
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-
-      const loginRes = await axios.post(
-        "http://192.168.1.29:3001/userapps/login",
-        loginUser,
-        config
-      );
-
-      // setUserData({
-      //   token: loginRes.data.token,
-      //   user: loginRes.data.user,
-      // });
-      console.log(loginRes);
-
-      if (loginRes.data.token) {
-        Actions.replace("main", { token: loginRes.data.token });
-      } else {
-        alert("no funcionó");
-      }
-    } catch (err) {
-      alert(err.response.data.msg);
-    }
-  };
 
   return (
     <View style={styles.container}>
@@ -167,7 +134,10 @@ function SignIn() {
           onChangeText={(e) => setPassword(e)}
         ></TextInput>
 
-        <TouchableOpacity style={styles.button2} onPress={submit}>
+        <TouchableOpacity
+          style={styles.button2}
+          onPress={() => submit(email, password, dispatch)}
+        >
           <Text style={styles.register3}>INGRESAR</Text>
         </TouchableOpacity>
 

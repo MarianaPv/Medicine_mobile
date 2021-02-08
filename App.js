@@ -5,17 +5,24 @@ import Routes from "./Routes/Routes.js";
 import LottieView from "lottie-react-native";
 import UserContext from "./Components/Context/context";
 import Axios from "axios";
+import { createStore, applyMiddleware } from "redux";
+import allReducer from "./Components/Reducer/";
+import login from "./Components/SignIn/index";
+import GetUser from "./Components/SignIn/GetUser";
+import thunk from "redux-thunk";
+import { Provider } from "react-redux";
+
+//STORE
+const store = createStore(
+  allReducer,
+  window._REDUX_DEVTOOLS_EXTENSION_ && window._REDUX_DEVTOOLS_EXTENSION_()
+);
 
 function App() {
-  const [userData, setUserData] = useState({
-    token: undefined,
-    user: undefined,
-  });
-
   return (
-    <UserContext.Provider value={{ userData, setUserData }}>
+    <Provider store={store}>
       <Routes />
-    </UserContext.Provider>
+    </Provider>
   );
 }
 

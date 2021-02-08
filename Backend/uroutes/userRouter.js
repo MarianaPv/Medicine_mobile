@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("../auth");
 const nodemailer = require("nodemailer");
+const { ObjectID } = require("mongodb");
 
 //REGISTER
 
@@ -164,15 +165,67 @@ router.post("/tokenIsValid", async (req, res) => {
 router.get("/", auth, async (req, res) => {
   const user = await User.findById(req.user);
   res.json({
-    displayName: user.displayName,
-    id: user._id,
+    user,
   });
 });
 
 //UPDATE STATE
 
 router.post("/updatestate", async (req, res) => {
-  const { temperature, sugarLevel, pressure, weight, oxygenSat } = req.body;
+  const {
+    temperature,
+    sugarLevel,
+    pressure,
+    weight,
+    oxygenSat,
+    userID,
+  } = req.body;
+  let currentDate = new Date();
+  currentDate.setHours(currentDate.getHours() - 5);
+
+  if (temperature.trim() !== "") {
+    await User.update(
+      { _id: new ObjectID(userID) },
+      {
+        $push: {
+          historicTemperature: { temperature: temperature, date: currentDate },
+        },
+      }
+    );
+  }
+
+  if (sugarLevel.trim() !== "") {
+    await User.update(
+      { _id: new ObjectID(userID) },
+      {
+        $push: {
+          historicSugarLevel: { sugarLevel: sugarLevel, date: currentDate },
+        },
+      }
+    );
+  }
+
+  if (pressure.trim() !== "") {
+    await User.update(
+      { _id: new ObjectID(userID) },
+      {
+        $push: {
+          historicPressure: { pressure: pressure, date: currentDate },
+        },
+      }
+    );
+  }
+
+  if (weight.trim() !== "") {
+    await User.update(
+      { _id: new ObjectID(userID) },
+      {
+        $push: {
+          historicWeight: { weight: weight, date: currentDate },
+        },
+      }
+    );
+  }
 });
 
 module.exports = router;

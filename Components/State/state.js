@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Actions } from "react-native-router-flux";
+import { useSelector } from "react-redux";
+import axios from "axios";
+
 import {
   StyleSheet,
   Text,
@@ -34,6 +37,7 @@ function State() {
   const [sugarLevel, setSugarLevel] = useState("");
   const [temperature, setTemperature] = useState("");
   const [oxygenSat, setOxygenSat] = useState("");
+
   const [symptoms, setSymptoms] = useState("");
   const [headache, setHeadache] = useState(false);
   const [vision, setVision] = useState(false);
@@ -41,32 +45,58 @@ function State() {
   const [nausea, setNausea] = useState(false);
   const [stomachache, setStomachache] = useState(false);
   const [urine, setUrine] = useState(false);
+  const userToken = useSelector((state) => state.userInfo.token);
+  const [userData, setUserData] = useState(null);
 
-  const sendState = async (e) => {
-    e.preventDefault();
-    console.log("entre marita");
+  const getUserInfo = async () => {
+    try {
+      const config = {
+        headers: {
+          "content-type": "application/json",
+          "x-auth-token": userToken,
+        },
+      };
+      const res = await axios.get("http://192.168.1.29:3001/userapps/", config);
+      setUserData(res.data);
+    } catch (err) {
+      alert(err);
+    }
+  };
 
-    const newUser = {
-      _id,
+  useEffect(() => {
+    getUserInfo();
+  }, []);
+
+  const sendState = async () => {
+    const updateUser = {
       temperature,
       sugarLevel,
       pressure,
       weight,
       oxygenSat,
+      userID: userData.user._id,
     };
 
-    console.log(newUser);
+    const config = {
+      headers: {
+        "content-type": "application/json",
+      },
+    };
+
     try {
       const request = await axios.post(
-        "http://192.168.0.28:3001/userapps/updatestate",
-        newUser
+        "http://192.168.1.29:3001/userapps/updatestate",
+        updateUser,
+        config
       );
+
       console.log(request);
     } catch (e) {
       console.log(e);
     }
   };
 
+  useEffect(() => {}, [weight, pressure, sugarLevel, temperature]);
   return (
     <View styles={styles.container}>
       <Text
@@ -196,11 +226,16 @@ function State() {
         <TouchableOpacity
           style={{ marginLeft: 20, marginRight: 15, width: 70 }}
         >
-          <ImageBackground
-            source={require("./icon1-1.png")}
-            style={styles.icon}
-          ></ImageBackground>
-
+          <View>
+            <ImageBackground
+              source={require("./circle.png")}
+              style={styles.icon}
+            ></ImageBackground>
+            <ImageBackground
+              source={require("./icon1-1.png")}
+              style={styles.icon}
+            ></ImageBackground>
+          </View>
           <Text style={styles.iconText}>Estoy bien</Text>
         </TouchableOpacity>
 
@@ -330,6 +365,14 @@ const styles = StyleSheet.create({
   icon: {
     width: 70,
     height: 70,
+    marginRight: 5,
+    overflow: "hidden",
+  },
+
+  iconCircle: {
+    width: 20,
+    height: 20,
+
     marginRight: 5,
     overflow: "hidden",
   },

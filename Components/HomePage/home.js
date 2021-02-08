@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Actions } from "react-native-router-flux";
+import { useSelector } from "react-redux";
+import axios from "axios";
 import {
   StyleSheet,
   Text,
@@ -27,6 +29,29 @@ import {
 } from "@expo-google-fonts/roboto";
 
 function HomePage() {
+  const userToken = useSelector((state) => state.userInfo.token);
+  const [userData, setUserData] = useState(null);
+  const getUserInfo = async () => {
+    try {
+      const config = {
+        headers: {
+          "content-type": "application/json",
+          "x-auth-token": userToken,
+        },
+      };
+      const res = await axios.get("http://192.168.1.29:3001/userapps/", config);
+      setUserData(res.data);
+    } catch (err) {
+      alert(err);
+    }
+  };
+  useEffect(() => {
+    getUserInfo();
+  }, []);
+  useEffect(() => {
+    console.log(userData, "userInfo");
+  }, [userData]);
+
   return (
     <View styles={styles.container}>
       <ImageBackground
