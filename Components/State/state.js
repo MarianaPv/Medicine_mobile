@@ -228,10 +228,6 @@ function State() {
         >
           <View>
             <ImageBackground
-              source={require("./circle.png")}
-              style={styles.icon}
-            ></ImageBackground>
-            <ImageBackground
               source={require("./icon1-1.png")}
               style={styles.icon}
             ></ImageBackground>

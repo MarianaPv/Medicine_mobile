@@ -112,12 +112,10 @@ function SignIn(props) {
         BIENVENIDO
       </Text>
       <View style={styles.container2}>
-        <Text htmlFor="email" style={styles.textLabel}>
-          Correo Electrónico
-        </Text>
+        <Text style={styles.textLabel}>Correo Electrónico</Text>
         <TextInput
-          id="email"
-          name="email"
+          id="displayName"
+          name="displayName"
           autoFocus
           style={styles.textInput}
           onChangeText={(e) => setEmail(e)}

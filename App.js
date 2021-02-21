@@ -6,10 +6,9 @@ import LottieView from "lottie-react-native";
 import UserContext from "./Components/Context/context";
 import Axios from "axios";
 import { createStore, applyMiddleware } from "redux";
-import allReducer from "./Components/Reducer/";
+import allReducer from "./Components/reducers";
 import login from "./Components/SignIn/index";
 import GetUser from "./Components/SignIn/GetUser";
-import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 
 //STORE
